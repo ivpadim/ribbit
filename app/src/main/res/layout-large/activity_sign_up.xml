@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ivpadim.ribbit.ui.SignUpActivity"
+    style="@style/AuthBackground">
+
+    <include layout="@layout/auth_common" />
+
+    <LinearLayout
+        android:id="@+id/fieldsLayout"
+        style="@style/AuthFieldsLayoutTablet">
+
+    <EditText
+        android:id="@+id/usernameField"
+        android:hint="@string/username_hint"
+        style="@style/AuthField"/>
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="@string/password_hint"
+        style="@style/AuthField"/>
+
+    <EditText
+        android:id="@+id/emailField"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:hint="@string/email_hint"
+        style="@style/AuthField"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="2"
+        style="@style/AuthLayoutButtonsTablet">
+        <Button
+            android:id="@+id/signUpButton"
+            android:text="@string/sign_up_button_label"
+            android:layout_weight="1"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            style="@style/AuthButton" />
+
+        <ImageView
+            android:id="@+id/buttonDivider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_divider"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:text="@string/cancel_button_label"
+            android:layout_weight="1"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            style="@style/AuthButton" />
+    </LinearLayout>
+
+
+</RelativeLayout>

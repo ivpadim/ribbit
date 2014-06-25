@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ivpadim.ribbit.ui.LoginActivity"
+    style="@style/AuthBackground">
+
+    <include layout="@layout/auth_common" />
+
+    <LinearLayout
+        android:id="@+id/fieldsLayout"
+        style="@style/AuthFieldsLayoutTablet">
+
+        <EditText
+            android:id="@+id/usernameField"
+            android:hint="@string/username_hint"
+            style="@style/AuthField">
+            <requestFocus/>
+        </EditText>
+
+        <EditText
+            android:id="@+id/passwordField"
+            android:inputType="textPassword"
+            android:hint="@string/password_hint"
+            android:ems="10"
+            style="@style/AuthField"/>
+
+    </LinearLayout>
+
+    <Button
+        android:text="@string/login_text"
+        android:id="@+id/loginButton"
+        style="@style/AuthButtonTablet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_text"
+        android:textColor="@android:color/white"
+        android:id="@+id/signUpText"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/loginButton"
+        android:layout_marginTop="12dp"/>
+
+</RelativeLayout>
