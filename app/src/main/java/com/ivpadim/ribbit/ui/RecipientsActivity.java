@@ -1,7 +1,7 @@
 package com.ivpadim.ribbit.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,17 +9,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ivpadim.ribbit.adapters.UserAdapter;
 import com.ivpadim.ribbit.utils.FileHelper;
 import com.ivpadim.ribbit.utils.ParseConstants;
 import com.ivpadim.ribbit.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -28,7 +33,7 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipientsActivity extends ListActivity {
+public class RecipientsActivity extends Activity {
     public static final String TAG = FriendsFragment.class.getSimpleName();
 
     protected List<ParseUser> mFriends;
@@ -37,13 +42,20 @@ public class RecipientsActivity extends ListActivity {
     protected Uri mMediaUri;
     protected String mFileType;
     protected MenuItem mSendMenuItem;
+    protected GridView mGridView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.user_grid);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView = (GridView) findViewById(R.id.friendsGrid);
+        mGridView.setEmptyView(emptyTextView);
+        mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
 
         mMediaUri = getIntent().getData();
         mFileType = getIntent().getStringExtra(ParseConstants.KEY_FILE_TYPE);
@@ -54,26 +66,22 @@ public class RecipientsActivity extends ListActivity {
         super.onResume();
         mCurrentUser = ParseUser.getCurrentUser();
         mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
-
+        setProgressBarIndeterminateVisibility(true);
         ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
         query.addAscendingOrder(ParseConstants.KEY_USERNAME);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> friends, ParseException e) {
-                setProgressBarIndeterminate(false);
+                setProgressBarIndeterminateVisibility(false);
                 if (e == null) {
                     mFriends = friends;
-                    String[] userNames = new String[mFriends.size()];
-                    int i = 0;
-                    for (ParseUser user : mFriends) {
-                        userNames[i] = user.getUsername();
-                        i++;
+                    if (mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(RecipientsActivity.this,
+                                mFriends);
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
                     }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(),
-                            android.R.layout.simple_list_item_checked,
-                            userNames);
-                    setListAdapter(adapter);
                 }
                 else{
                     showError(e.getMessage());
@@ -82,17 +90,34 @@ public class RecipientsActivity extends ListActivity {
         });
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ImageView checkIcon = (ImageView) view.findViewById(R.id.checkIcon);
+            if(mGridView.isItemChecked(position)){
+                checkIcon.setVisibility(View.VISIBLE);
+            }
+            else {
+                checkIcon.setVisibility(View.INVISIBLE);
+            }
 
-        if(l.getCheckedItemCount() >0 ) {
-            mSendMenuItem.setVisible(true);
+            if(mGridView.getCheckedItemCount() >0 ) {
+                mSendMenuItem.setVisible(true);
+            }
+            else{
+                mSendMenuItem.setVisible(false);
+            }
+
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e!=null){
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
         }
-        else{
-            mSendMenuItem.setVisible(false);
-        }
-    }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,6 +154,7 @@ public class RecipientsActivity extends ListActivity {
             public void done(ParseException e) {
                 setProgressBarIndeterminateVisibility(false);
                 if(e==null){
+                    sendPushNotifications();
                     Toast.makeText(RecipientsActivity.this,
                             R.string.success_message,
                             Toast.LENGTH_LONG)
@@ -170,12 +196,22 @@ public class RecipientsActivity extends ListActivity {
 
     private ArrayList<String> getRecipientsIds() {
         ArrayList<String> recipients = new ArrayList<String>();
-        for (int i = 0; i < getListView().getCount(); i++) {
-            if(getListView().isItemChecked(i)){
+        for (int i = 0; i < mGridView.getCount(); i++) {
+            if(mGridView.isItemChecked(i)){
                 recipients.add(mFriends.get(i).getObjectId());
             }
         }
         return recipients;
+    }
+
+    private void sendPushNotifications(){
+        ParseQuery<ParseInstallation> query = ParseInstallation.getQuery();
+        query.whereContainedIn(ParseConstants.KEY_USER_ID, getRecipientsIds());
+
+        ParsePush push = new ParsePush();
+        push.setQuery(query);
+        push.setMessage(getString(R.string.push_message, ParseUser.getCurrentUser().getUsername()));
+        push.sendInBackground();
     }
 
 

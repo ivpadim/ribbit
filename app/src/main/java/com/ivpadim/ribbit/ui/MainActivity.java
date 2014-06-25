@@ -250,7 +250,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 sendBroadcast(mediaScanIntent);
             }
 
-            String fileType = "";
+            String fileType;
 
             if(requestCode == TAKE_PHOTO_REQUEST || requestCode == PICK_PHOTO_REQUEST){
                 fileType = ParseConstants.TYPE_IMAGE;

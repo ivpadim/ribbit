@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ivpadim.ribbit.R;
+import com.ivpadim.ribbit.RibbitApplication;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -62,9 +63,10 @@ public class LoginActivity extends Activity {
                     setProgressBarIndeterminateVisibility(true);
                     ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
-                        public void done(ParseUser parseUser, ParseException e) {
+                        public void done(ParseUser user, ParseException e) {
                             setProgressBarIndeterminate(false);
                             if(e==null){
+                                RibbitApplication.updateParseInstallation(user);
                                 Intent intent = new Intent(LoginActivity.this,
                                                            MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -80,6 +82,7 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
 
     private void showError(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

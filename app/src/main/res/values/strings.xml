@@ -43,5 +43,6 @@
     <string name="subtitle_text">A treehouse project</string>
     <string name="content_desc_user_avatar">User avatar</string>
     <string name="content_desc_user_check">User check</string>
+    <string name="push_message">You have a new message from %s!</string>
 
 </resources>

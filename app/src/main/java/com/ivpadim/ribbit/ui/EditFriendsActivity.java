@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +35,7 @@ public class EditFriendsActivity extends Activity {
     protected ParseUser mCurrentUser;
     protected GridView mGridView;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -42,8 +44,8 @@ public class EditFriendsActivity extends Activity {
         TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
         mGridView = (GridView) findViewById(R.id.friendsGrid);
         mGridView.setEmptyView(emptyTextView);
-
         mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
     }
 
     @Override
@@ -114,25 +116,28 @@ public class EditFriendsActivity extends Activity {
         dialog.show();
     }
 
-    //@Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        //super.onListItemClick(l, v, position, id);
-        if(mGridView.isItemChecked(position)){
-            mFriendsRelation.add(mUsers.get(position));
-        }
-        else {
-            mFriendsRelation.remove(mUsers.get(position));
-        }
-
-        mCurrentUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e!=null){
-                    Log.e(TAG, e.getMessage());
-                }
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ImageView checkIcon = (ImageView) view.findViewById(R.id.checkIcon);
+            if(mGridView.isItemChecked(position)){
+                mFriendsRelation.add(mUsers.get(position));
+                checkIcon.setVisibility(View.VISIBLE);
             }
-        });
+            else {
+                mFriendsRelation.remove(mUsers.get(position));
+                checkIcon.setVisibility(View.INVISIBLE);
+            }
 
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e!=null){
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
+        }
+    };
 
-    }
 }
