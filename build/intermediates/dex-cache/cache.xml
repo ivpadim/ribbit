@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
     <item
-        dex="/Users/ivpadim/Projects/android/Ribbit/app/build/intermediates/pre-dexed/debug/Parse-1.5.1-f4f30b748eda9c2dd7b5d17f33ccce55b0046e83.jar"
-        jar="/Users/ivpadim/Projects/android/Ribbit/app/libs/Parse-1.5.1.jar"
+        jar="/Users/ivpadim/Projects/ribbit/app/libs/commons-io-2.4.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="3d645417e7780d44f32e29a3ec6b729b75aef26c"/>
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="/Users/ivpadim/Projects/ribbit/app/build/intermediates/pre-dexed/debug/commons-io-2.4-3977c2323283821d403c3810496af3e61c831190.jar" />
+    </item>
     <item
-        dex="/Users/ivpadim/Projects/android/Ribbit/app/build/intermediates/pre-dexed/debug/support-v13-19.1.0-432d29bb26d6067815408d15c09d69cadf2dd68d.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
+        jar="/Users/ivpadim/Projects/ribbit/app/libs/Parse-1.5.1.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c"/>
+        sha1="3d645417e7780d44f32e29a3ec6b729b75aef26c">
+        <dex dex="/Users/ivpadim/Projects/ribbit/app/build/intermediates/pre-dexed/debug/Parse-1.5.1-f6cb356aa19476a874c65824f4985d4240410370.jar" />
+    </item>
     <item
-        dex="/Users/ivpadim/Projects/android/Ribbit/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-2d0a817f405c42b9695444efcdc46230af60ed0a.jar"
-        jar="/Users/ivpadim/Projects/android/Ribbit/app/libs/picasso-2.3.2.jar"
+        jar="/Users/ivpadim/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27"/>
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="/Users/ivpadim/Projects/ribbit/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-59822d1d776a86811d095fb7dc22c6b1468fda4c.jar" />
+    </item>
     <item
-        dex="/Users/ivpadim/Projects/android/Ribbit/app/build/intermediates/pre-dexed/debug/commons-io-2.4-99b78e879457eb1113c266edfff4be452ad78530.jar"
-        jar="/Users/ivpadim/Projects/android/Ribbit/app/libs/commons-io-2.4.jar"
+        jar="/Users/ivpadim/Projects/ribbit/app/libs/picasso-2.3.2.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad"/>
+        sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27">
+        <dex dex="/Users/ivpadim/Projects/ribbit/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-10c15950924f10f656261513a90d5f3f7d79e002.jar" />
+    </item>
     <item
-        dex="/Users/ivpadim/Projects/android/Ribbit/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-fe930dc68beb1e566675ce71b270d4091c6c249b.jar"
-        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jar="/Users/ivpadim/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c">
+        <dex dex="/Users/ivpadim/Projects/ribbit/app/build/intermediates/pre-dexed/debug/support-v13-19.1.0-ed8d022960ed61ce517dbec16c87a75604798755.jar" />
+    </item>
 
-</pre-dex-items>
+</items>
